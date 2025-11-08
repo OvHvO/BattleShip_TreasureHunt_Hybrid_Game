@@ -8,6 +8,8 @@ type Room = {
   status: 'waiting' | 'playing' | 'finished';
   created_at: string;
   owner_id: number;
+  current_turn_user_id: number | null;
+  winner_id: number | null;
 };
 
 // GET /api/rooms/[id] - Get room by ID with players
@@ -40,6 +42,8 @@ export async function GET(
         r.status, 
         r.created_at, 
         r.owner_id,
+        r.current_turn_user_id,
+        r.winner_id,
         u.username as owner_username
       FROM rooms r
       JOIN users u ON r.owner_id = u.user_id

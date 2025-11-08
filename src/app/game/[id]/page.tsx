@@ -30,18 +30,21 @@ export default function GameInterfacePage() {
     name: string
     gameMode: string
     status: string
+    current_turn_user_id: number | null
+    winner_id: number | null
   } | null>(null)
   const [players, setPlayers] = useState<{
     id: string
     username: string
     score: number
+    status: 'active' | 'dead'
   }[]>([])
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
   const [authError, setAuthError] = useState<string | null>(null)
   const [hasLeftGame, setHasLeftGame] = useState(false)
   const [isLeaving, setIsLeaving] = useState(false);
   const [isScannerVisible, setIsScannerVisible] = useState(false)
-  const [scannedData, setScannedData] = useState<string | null>(null) // 依然保留，用于显示在 modal 中
+  const [scannedData, setScannedData] = useState<string | null>(null)
   const [question, setQuestion] = useState<{
     question_id: string
     question: string
@@ -50,6 +53,8 @@ export default function GameInterfacePage() {
   } | null>(null)
   const [showQuestionModal, setShowQuestionModal] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
+  const [isSkipping, setIsSkipping] = useState(false)
+  const [isMarkingDead, setIsMarkingDead] = useState(false)
   
   // 👇 No longer needed
   // const scannerContainerRef = useRef<HTMLDivElement>(null)
@@ -64,13 +69,19 @@ export default function GameInterfacePage() {
       // Fetch room data
       const roomResponse = await fetch(`/api/rooms/${gameId}`)
       if (roomResponse.ok) {
-        const roomData = await roomResponse.json()
-        setGameData({
-          id: roomData.room_id,
-          name: roomData.room_name,
-          gameMode: 'Quiz Battle',
-          status: roomData.status
-        })
+        const responseData = await roomResponse.json() 
+        const roomData = responseData.room           
+
+        if (roomData) {
+          setGameData({
+            id: roomData.room_id, 
+            name: roomData.room_name,
+            gameMode: 'Quiz Battle',
+            status: roomData.status,
+            current_turn_user_id: roomData.current_turn_user_id,
+            winner_id: roomData.winner_id
+          })
+        }
       }
 
       // Fetch players with scores from game_results
@@ -148,6 +159,9 @@ export default function GameInterfacePage() {
           throw new Error('Access revoked');
         }
         
+        console.log('Poll: Fetching game data...');
+        await fetchGameData();
+
         // If everything is normal, do nothing and continue the game
         console.log('Poll check: Still authorized');
         
@@ -167,10 +181,30 @@ export default function GameInterfacePage() {
     // Cleanup interval
     return () => clearInterval(intervalId);
 
-  }, [isAuthorized, gameId, user, router]);
+  }, [isAuthorized, gameId, user, router, fetchGameData]);
   
   const currentUser = user?.username || ""
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score)
+  
+  // Check if it's current user's turn (using consistent string comparison)
+  const currentTurnId = gameData?.current_turn_user_id
+  const userId = user?.id
+  console.log(`🔄 Checking turn - Current turn user ID: ${currentTurnId} (${typeof currentTurnId}), Logged-in user ID: ${userId} (${typeof userId})`)
+
+  const isMyTurn = (
+    typeof userId !== 'undefined' && userId !== null &&
+    typeof currentTurnId !== 'undefined' && currentTurnId !== null &&
+    userId.toString() === currentTurnId.toString()
+  )
+
+
+  
+  // Check if current user is dead
+  const currentPlayerStatus = players.find(p => p.id === user?.id?.toString())?.status
+  const isPlayerDead = currentPlayerStatus === 'dead'
+  
+  // Check if game is finished
+  const isGameFinished = gameData?.status === 'finished'
 
   // ... (Your handleLeaveGame remains unchanged) ...
   const handleLeaveGame = async () => {
@@ -270,6 +304,72 @@ export default function GameInterfacePage() {
       alert('Error loading question')
     }
   }, []); // Remove handleCloseScanner dependency
+
+  // Handle skip turn
+  const handleSkipTurn = async () => {
+    if (isSkipping || !user?.id || !gameId) return
+    setIsSkipping(true)
+
+    try {
+      const response = await fetch(`/api/rooms/${gameId}/skip-turn`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id
+        })
+      })
+
+      if (response.ok) {
+        await fetchGameData()
+        console.log('✅ Turn skipped successfully')
+      } else {
+        const errorData = await response.json()
+        alert(errorData.error || 'Failed to skip turn')
+      }
+    } catch (error) {
+      console.error('Error skipping turn:', error)
+      alert('Failed to skip turn')
+    } finally {
+      setIsSkipping(false)
+    }
+  }
+
+  // Handle player death
+  const handleMarkDead = async () => {
+    if (isMarkingDead || !user?.id || !gameId) return
+    
+    const confirmed = confirm('Are you sure you want to mark yourself as dead? You will not participate in future rounds.')
+    if (!confirmed) return
+
+    setIsMarkingDead(true)
+
+    try {
+      const response = await fetch(`/api/rooms/${gameId}/mark-dead`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id
+        })
+      })
+
+      if (response.ok) {
+        await fetchGameData()
+        console.log('✅ Marked as dead successfully')
+      } else {
+        const errorData = await response.json()
+        alert(errorData.error || 'Failed to mark as dead')
+      }
+    } catch (error) {
+      console.error('Error marking as dead:', error)
+      alert('Failed to mark as dead')
+    } finally {
+      setIsMarkingDead(false)
+    }
+  }
   
   // 👇 Scanner useEffect has been completely removed
   
@@ -294,12 +394,33 @@ export default function GameInterfacePage() {
         })
 
         if (response.ok) {
+          const result = await response.json()
+          
+          // Check if player won by reaching 10 points
+          if (result.game_won) {
+            alert(`🎉 Congratulations! You've won the game with ${result.new_score} points!`)
+          } else {
+            alert(`Correct! +1 point (${result.new_score}/10)`)
+          }
+          
           // Refresh game data
           await fetchGameData()
-          alert('Correct! +1 point')
         }
       } else {
         alert(`Wrong answer! The correct answer was ${question.correct_answer}`)
+        
+        // Still need to advance turn even if wrong
+        await fetch(`/api/rooms/${gameId}/skip-turn`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: user.id
+          })
+        })
+        
+        await fetchGameData()
       }
       
       // Close modal and reset
@@ -546,16 +667,26 @@ export default function GameInterfacePage() {
                       className={`group/item flex items-center gap-4 p-3 sm:p-4 rounded-2xl transition-all duration-300 ${
                         player.username === currentUser 
                           ? "bg-gradient-to-r from-primary/25 via-primary/15 to-purple-500/25 border-2 border-primary/50 shadow-lg shadow-primary/20" 
-                          : "bg-gradient-to-r from-muted/80 to-muted/40 hover:from-muted hover:to-muted/60 border-2 border-transparent hover:border-primary/20 hover:scale-[1.01] shadow-md hover:shadow-lg"
+                          : player.status === 'dead'
+                            ? "bg-gradient-to-r from-red-500/10 to-red-600/10 border-2 border-red-500/30 opacity-60"
+                            : "bg-gradient-to-r from-muted/80 to-muted/40 hover:from-muted hover:to-muted/60 border-2 border-transparent hover:border-primary/20 hover:scale-[1.01] shadow-md hover:shadow-lg"
                       }`}
                     >
                       <div className="relative flex-shrink-0">
                         {/* (Responsive) h-12 w-12 sm:h-14 sm:w-14 */}
                         <Avatar className="h-12 w-12 sm:h-14 sm:w-14 border-4 border-background shadow-lg ring-2 ring-primary/20">
-                          <AvatarFallback className="text-base font-black bg-gradient-to-br from-primary/30 to-purple-500/30 text-primary">
-                            {player.username.slice(0, 2).toUpperCase()}
+                          <AvatarFallback className={`text-base font-black bg-gradient-to-br ${
+                            player.status === 'dead'
+                              ? 'from-red-500/30 to-red-600/30 text-red-500'
+                              : 'from-primary/30 to-purple-500/30 text-primary'
+                          }`}>
+                            {player.status === 'dead' ? '💀' : player.username.slice(0, 2).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
+                        {/* Turn indicator */}
+                        {gameData?.current_turn_user_id?.toString() === player.id && player.status === 'active' && (
+                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full animate-pulse border-2 border-background"></div>
+                        )}
                       </div>
                       
                       <div className="flex-1 min-w-0">
@@ -565,22 +696,31 @@ export default function GameInterfacePage() {
                           </span>
                           {/* (Responsive) text-sm sm:text-base */}
                           <span className={`text-sm sm:text-base font-bold truncate ${
-                            player.username === currentUser ? "text-primary" : "text-foreground"
+                            player.username === currentUser ? "text-primary" : player.status === 'dead' ? "text-red-500 line-through" : "text-foreground"
                           }`}>
                             {player.username}
                           </span>
+                          {gameData?.current_turn_user_id?.toString() === player.id && player.status === 'active' && (
+                            <span className="text-xs bg-green-500/20 text-green-600 px-2 py-0.5 rounded-full font-semibold">
+                              Current Turn
+                            </span>
+                          )}
                         </div>
                         <div className="text-xs text-muted-foreground font-medium mt-1.5 flex items-center gap-2">
-                          <span>🎯 Quiz Master</span>
+                          <span>{player.status === 'dead' ? '💀 Eliminated' : '🎯 Quiz Master'}</span>
                           <span>•</span>
-                          <span>⭐ {player.score} pts</span>
+                          <span>⭐ {player.score}/10 pts</span>
                         </div>
                       </div>
                       
                       <div className="flex-shrink-0">
                         {/* (Responsive) px-3 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-sm */}
-                        <Badge className="bg-gradient-to-r from-primary/20 to-purple-500/20 text-primary border-2 border-primary/40 hover:from-primary/30 hover:to-purple-500/30 font-bold px-3 py-1 sm:px-4 sm:py-1.5 shadow-lg shadow-primary/20 text-xs sm:text-sm">
-                          ⭐ Active
+                        <Badge className={`border-2 font-bold px-3 py-1 sm:px-4 sm:py-1.5 shadow-lg text-xs sm:text-sm ${
+                          player.status === 'dead'
+                            ? 'bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-600 border-red-500/40'
+                            : 'bg-gradient-to-r from-primary/20 to-purple-500/20 text-primary border-primary/40 hover:from-primary/30 hover:to-purple-500/30 shadow-primary/20'
+                        }`}>
+                          {player.status === 'dead' ? '💀 Dead' : '⭐ Active'}
                         </Badge>
                       </div>
                     </div>
@@ -596,19 +736,96 @@ export default function GameInterfacePage() {
         <footer className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-border/50 shadow-2xl z-40">
           <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none"></div>
           <div className="relative max-w-7xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-center">
-              {/* Center - Scan QR Button */}
-              <div className="absolute left-1/2 -translate-x-1/2 -top-8">
+            {/* Game Status and Winner Display */}
+            {isGameFinished && gameData?.winner_id && (
+              <div className="mb-4 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-2 border-yellow-500/50 rounded-xl text-center">
+                <h2 className="text-xl font-bold text-yellow-600 mb-2">🎉 Game Over!</h2>
+                <p className="text-base font-semibold">
+                  Winner: {players.find(p => p.id === gameData.winner_id?.toString())?.username || 'Unknown'}
+                </p>
+              </div>
+            )}
+
+            {/* Turn Indicator */}
+            {!isGameFinished && gameData?.current_turn_user_id && (
+              <div className="mb-3 text-center">
+                <div className={`inline-block px-4 py-2 rounded-full ${
+                  isMyTurn 
+                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-500/50 text-green-600' 
+                    : 'bg-muted/50 border-2 border-border text-muted-foreground'
+                }`}>
+                  <p className="text-sm font-semibold">
+                    {isMyTurn 
+                      ? '🎯 Your Turn!' 
+                      : `⏳ ${players.find(p => p.id === gameData.current_turn_user_id?.toString())?.username || 'Unknown'}'s Turn`
+                    }
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            {!isGameFinished && !isPlayerDead && (
+              <div className="flex items-center justify-center gap-3">
+                {/* Skip Button */}
                 <Button 
-                  id="scan-qr-button"
-                  onClick={handleScanQRCode}
-                  size="lg"
-                  className="h-16 w-16 rounded-full bg-gradient-to-br from-primary via-primary/90 to-purple-600 hover:from-primary/90 hover:via-primary/80 hover:to-purple-500 shadow-2xl shadow-primary/40 hover:shadow-3xl hover:shadow-primary/60 transition-all duration-300 group border-4 border-background hover:scale-110"
+                  onClick={handleSkipTurn}
+                  disabled={!isMyTurn || isSkipping}
+                  variant="outline"
+                  className={`h-12 px-6 rounded-xl font-semibold transition-all ${
+                    !isMyTurn 
+                      ? 'opacity-50 cursor-not-allowed' 
+                      : 'hover:bg-yellow-500/10 hover:border-yellow-500 hover:text-yellow-600'
+                  }`}
                 >
-                  <QrCode className="h-8 w-8 text-white group-hover:scale-110 transition-transform" />
+                  {isSkipping ? 'Skipping...' : '⏭️ Skip'}
+                </Button>
+
+                {/* Scan QR Button (Center, Elevated) */}
+                <div className="relative">
+                  <Button 
+                    id="scan-qr-button"
+                    onClick={handleScanQRCode}
+                    disabled={!isMyTurn}
+                    size="lg"
+                    className={`h-16 w-16 rounded-full shadow-2xl transition-all duration-300 group border-4 border-background ${
+                      isMyTurn
+                        ? 'bg-gradient-to-br from-primary via-primary/90 to-purple-600 hover:from-primary/90 hover:via-primary/80 hover:to-purple-500 shadow-primary/40 hover:shadow-3xl hover:shadow-primary/60 hover:scale-110'
+                        : 'bg-muted opacity-50 cursor-not-allowed'
+                    }`}
+                  >
+                    <QrCode className={`h-8 w-8 text-white transition-transform ${
+                      isMyTurn ? 'group-hover:scale-110' : ''
+                    }`} />
+                  </Button>
+                  {isMyTurn && (
+                    <div className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full animate-pulse"></div>
+                  )}
+                </div>
+
+                {/* Dead Button */}
+                <Button 
+                  onClick={handleMarkDead}
+                  disabled={!isMyTurn || isMarkingDead}
+                  variant="destructive"
+                  className={`h-12 px-6 rounded-xl font-semibold transition-all ${
+                    !isMyTurn 
+                      ? 'opacity-50 cursor-not-allowed' 
+                      : 'hover:bg-red-600'
+                  }`}
+                >
+                  {isMarkingDead ? 'Processing...' : '💀 Dead'}
                 </Button>
               </div>
-            </div>
+            )}
+
+            {/* Dead Player Message */}
+            {isPlayerDead && !isGameFinished && (
+              <div className="text-center p-4 bg-red-500/10 border-2 border-red-500/30 rounded-xl">
+                <p className="text-red-600 font-semibold">💀 You are eliminated from the game</p>
+                <p className="text-sm text-muted-foreground mt-1">Waiting for the game to finish...</p>
+              </div>
+            )}
           </div>
         </footer>
       </div>

@@ -15,7 +15,8 @@ export async function GET(
       SELECT 
         u.user_id as id,
         u.username,
-        COALESCE(gr.score, 0) as score
+        COALESCE(gr.score, 0) as score,
+        rp.status
       FROM room_players rp
       JOIN users u ON rp.user_id = u.user_id
       LEFT JOIN game_results gr ON gr.room_id = rp.room_id AND gr.user_id = u.user_id

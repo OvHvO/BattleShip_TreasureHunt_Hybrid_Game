@@ -45,13 +45,28 @@ export async function POST(
       )
     }
 
-    // Update room status to 'playing'
-    await query(
-      'UPDATE rooms SET status = ? WHERE room_id = ?',
-      ['playing', roomId]
+    // Get the first player (by joined_at) to set as the starting turn
+    const firstPlayer = await query(
+      'SELECT user_id FROM room_players WHERE room_id = ? ORDER BY joined_at ASC LIMIT 1',
+      [roomId]
     )
 
-    console.log(`✅ Room ${roomId} status updated to 'playing'`)
+    if (!Array.isArray(firstPlayer) || firstPlayer.length === 0) {
+      return NextResponse.json(
+        { error: 'No players found in room' },
+        { status: 400 }
+      )
+    }
+
+    const firstPlayerId = firstPlayer[0].user_id
+
+    // Update room status to 'playing' and set first player's turn
+    await query(
+      'UPDATE rooms SET status = ?, current_turn_user_id = ? WHERE room_id = ?',
+      ['playing', firstPlayerId, roomId]
+    )
+
+    console.log(`✅ Room ${roomId} status updated to 'playing', first turn: player ${firstPlayerId}`)
 
     // Return success - clients will detect the status change via polling
     return NextResponse.json({

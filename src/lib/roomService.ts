@@ -1,12 +1,12 @@
 // src/lib/roomService.ts
 
 import { query, execute } from "@/lib/db";
-import { sendRoomUpdate } from "../../pages/api/websocket"; // 调整这个导入路径
+import { sendRoomUpdate } from "../../pages/api/websocket"; // Adjust this import path
 
 const MAX_PLAYERS = 4;
 
 /**
- * 自定义错误类，用于在 API 路由中捕获并返回正确的 HTTP 状态码
+ * Custom error class for catching and returning correct HTTP status codes in API routes
  */
 export class ApiError extends Error {
   constructor(message: string, public status: number) {
@@ -16,12 +16,12 @@ export class ApiError extends Error {
 }
 
 /**
- * 核心业务逻辑：将一个玩家添加到一个房间
- * 这个函数包含了所有的验证
+ * Core business logic: Add a player to a room
+ * This function contains all validations
  */
 export async function addPlayerToRoom(roomId: number, userId: number) {
-  // 1. 检查房间是否存在、状态是否正确、是否已满
-  // 我们可以在一个查询中完成大部分检查
+  // Check if room exists, status is correct, and if it's full
+  // We can complete most checks in a single query
   const roomCheck = await query(
     `
     SELECT 
@@ -43,14 +43,14 @@ export async function addPlayerToRoom(roomId: number, userId: number) {
   const room = roomCheck[0];
 
   if (room.status !== 'waiting') {
-    throw new ApiError("Room is not accepting new players", 400); // 400 Bad Request 或 403 Forbidden
+    throw new ApiError("Room is not accepting new players", 400); // 400 Bad Request or 403 Forbidden
   }
 
   if (room.current_players >= MAX_PLAYERS) {
     throw new ApiError(`Room is full (maximum ${MAX_PLAYERS} players)`, 400); // 400 Bad Request
   }
 
-  // 2. 检查用户是否存在（如果你的数据库外键没有自动处理）
+  // Check if user exists (if your database foreign key doesn't handle it automatically)
   const users = await query(
     "SELECT user_id FROM users WHERE user_id = ?",
     [userId]
@@ -60,18 +60,18 @@ export async function addPlayerToRoom(roomId: number, userId: number) {
     throw new ApiError("User not found", 404);
   }
 
-  // 3. 检查用户是否已在房间
+  // Check if user is already in the room
   const existingRoomPlayer = await query(
     "SELECT id FROM room_players WHERE room_id = ? AND user_id = ?",
     [roomId, userId]
   );
 
   if (existingRoomPlayer.length > 0) {
-    // 这种情况不是一个真正的“错误”，更像是一个“冲突”
+    // This situation is not a real "error", but more like a "conflict"
     throw new ApiError("User is already in this room", 409); // 409 Conflict
   }
 
-  // 4. 所有检查通过：添加用户到房间
+  // All checks passed: Add user to room
   const result = await execute(
     "INSERT INTO room_players (room_id, user_id) VALUES (?, ?)",
     [roomId, userId]
@@ -79,10 +79,10 @@ export async function addPlayerToRoom(roomId: number, userId: number) {
 
   const roomPlayerId = (result as any).insertId;
 
-  // 5. 发送 WebSocket 更新
+  // Send WebSocket update
   await sendRoomUpdate(roomId.toString());
 
-  // 6. 返回成功创建的玩家对象
+  // Return successfully created player object
   const newPlayer = {
     id: roomPlayerId,
     room_id: roomId,

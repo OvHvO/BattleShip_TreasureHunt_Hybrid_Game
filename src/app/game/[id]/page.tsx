@@ -646,7 +646,7 @@ export default function GameInterfacePage() {
                       
                       <div className="text-right">
                         {/* (Responsive) text-2xl sm:text-3xl */}
-                        <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                        <div className="text-2xl sm:text-3xl font-black text-white">
                           {player.score}
                         </div>
                         <div className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">points</div>
@@ -765,7 +765,7 @@ export default function GameInterfacePage() {
                   <p className="text-sm font-semibold">
                     {isMyTurn 
                       ? '🎯 Your Turn!' 
-                      : `⏳ ${players.find(p => p.id === gameData.current_turn_user_id?.toString())?.username || 'Unknown'}'s Turn`
+                      : `⏳ ${players.find(p => p.id == gameData.current_turn_user_id?.toString())?.username || 'Unknown'}'s Turn`
                     }
                   </p>
                 </div>

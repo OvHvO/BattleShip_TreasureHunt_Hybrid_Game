@@ -258,7 +258,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              {/* Player Stats Card */}
+              {/* Player Stats Card
               <Card className="transform hover:scale-[1.02] transition-transform duration-200">
                 <CardHeader className="text-center">
                   <CardTitle className="text-lg sm:text-xl">Your Stats</CardTitle>
@@ -275,7 +275,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </div>
 

@@ -749,7 +749,7 @@ export default function GameInterfacePage() {
               <div className="mb-4 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-2 border-yellow-500/50 rounded-xl text-center">
                 <h2 className="text-xl font-bold text-yellow-600 mb-2">🎉 Game Over!</h2>
                 <p className="text-base font-semibold">
-                  Winner: {players.find(p => p.id === gameData.winner_id?.toString())?.username || 'Unknown'}
+                  Winner: {players.find(p => p.id == gameData.winner_id?.toString())?.username || 'Unknown'}
                 </p>
               </div>
             )}

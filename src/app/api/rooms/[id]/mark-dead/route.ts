@@ -9,7 +9,8 @@ export async function POST(
   try {
     const { id } = await params
     const roomId = parseInt(id)
-    const { user_id } = await request.json()
+    // 1. Get user_id from body (it's a string)
+    const { user_id: userIdString } = await request.json()
 
     // Validate input
     if (isNaN(roomId)) {
@@ -19,9 +20,12 @@ export async function POST(
       )
     }
 
-    if (!user_id) {
+    // 2. Convert the user_id string to a number
+    const user_id = parseInt(userIdString, 10);
+
+    if (isNaN(user_id)) {
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: "Invalid user ID format" },
         { status: 400 }
       )
     }
@@ -48,7 +52,9 @@ export async function POST(
       )
     }
 
+    // 3. Now this comparison works! (number === number)
     if (room.current_turn_user_id !== user_id) {
+      console.error(`Turn Check Failed: DB Turn (${typeof room.current_turn_user_id}) ${room.current_turn_user_id} !== Request User (${typeof user_id}) ${user_id}`);
       return NextResponse.json(
         { error: "It's not your turn" },
         { status: 403 }
@@ -99,8 +105,34 @@ export async function POST(
     }
 
     // Game continues - find next active player
-    const nextIndex = 0 // Start from first active player since current player is now dead
-    const nextPlayerId = activePlayers[nextIndex].user_id
+    // Since the current player is now dead, they are not in `activePlayers`.
+    // We just find the next player based on the original turn order.
+    const allPlayersInTurnOrder = await query(
+      `SELECT user_id FROM room_players WHERE room_id = ? ORDER BY joined_at ASC`,
+      [roomId]
+    )
+    
+    const currentIndex = allPlayersInTurnOrder.findIndex((p: any) => p.user_id === user_id)
+    
+    let nextPlayerId = -1;
+    let nextIndex = (currentIndex + 1) % allPlayersInTurnOrder.length;
+
+    // Loop until we find an active player
+    for (let i = 0; i < allPlayersInTurnOrder.length; i++) {
+      const potentialNextPlayerId = allPlayersInTurnOrder[nextIndex].user_id;
+      const isActive = activePlayers.some((p: any) => p.user_id === potentialNextPlayerId);
+      
+      if (isActive) {
+        nextPlayerId = potentialNextPlayerId;
+        break;
+      }
+      nextIndex = (nextIndex + 1) % allPlayersInTurnOrder.length;
+    }
+
+    if (nextPlayerId === -1) {
+       // This shouldn't happen if activePlayers.length >= 1, but as a fallback
+       nextPlayerId = activePlayers[0].user_id;
+    }
 
     // Update room with next player's turn
     await execute(

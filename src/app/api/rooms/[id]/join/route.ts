@@ -1,9 +1,9 @@
 // /api/rooms/[id]/join/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { addPlayerToRoom, ApiError } from "@/lib/roomService"; // 导入新函数
+import { addPlayerToRoom, ApiError } from "@/lib/roomService"; // Import new function
 
-// ... 你的 GET 函数保持不变 ...
+// ... Your GET function remains unchanged ...
 
 // POST /api/rooms/[id]/join - Join room by room ID
 export async function POST(
@@ -13,7 +13,7 @@ export async function POST(
   try {
     const { id } = await params;
     const roomId = parseInt(id);
-    const { user_id } = await request.json(); // 假设 user_id 来自 body
+    const { user_id } = await request.json(); // Assuming user_id comes from body
 
     if (isNaN(roomId)) {
       return NextResponse.json(
@@ -29,19 +29,19 @@ export async function POST(
       );
     }
 
-    // --- 删掉所有旧的验证 (check room capacity, check existing player) ---
-    // --- 删掉所有 fetch 代码 ---
+    // --- Remove all old validations (check room capacity, check existing player) ---
+    // --- Remove all fetch code ---
 
-    // 唯一要做的事：调用你的核心逻辑函数
+    // Only thing to do: call your core logic function
     const newPlayer = await addPlayerToRoom(roomId, user_id);
 
-    // 成功！
+    // Success!
     return NextResponse.json(newPlayer, { status: 201 });
 
   } catch (error) {
     console.error("Join room by ID error:", error);
 
-    // 捕获我们自定义的 ApiError 并返回正确的状态码
+    // Catch our custom ApiError and return correct status code
     if (error instanceof ApiError) {
       return NextResponse.json(
         { error: error.message },
@@ -49,7 +49,7 @@ export async function POST(
       );
     }
 
-    // 捕获所有其他未知错误
+    // Catch all other unknown errors
     return NextResponse.json(
       { error: "Failed to join room" },
       { status: 500 }

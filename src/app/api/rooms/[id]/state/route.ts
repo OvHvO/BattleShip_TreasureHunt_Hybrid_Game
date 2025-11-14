@@ -1,6 +1,6 @@
 // src/app/api/rooms/[id]/state/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "@/lib/db"; // 假设你的 db lib 在这里
+import { query } from "@/lib/db"; // Assuming your db lib is here
 
 export async function GET(
   request: NextRequest,
@@ -13,7 +13,7 @@ export async function GET(
       return NextResponse.json({ error: "Invalid room ID" }, { status: 400 });
     }
 
-    // 1. 在一个查询中获取房间信息
+    // 1. Get room information in one query
     const roomResult = await query(
       `
       SELECT 
@@ -30,7 +30,7 @@ export async function GET(
       return NextResponse.json({ error: "Room not found" }, { status: 404 });
     }
 
-    // 2. 在另一个查询中获取玩家列表
+    // 2. Get player list in another query
     const playersResult = await query(
       `
       SELECT rp.user_id, u.username, rp.joined_at 
@@ -42,9 +42,9 @@ export async function GET(
       [roomId]
     );
 
-    // 3. 在一个响应中合并并返回
+    // 3. Merge and return in one response
     return NextResponse.json({
-      room: { ...roomResult[0], player_count: playersResult.length }, // 动态计算 player_count
+      room: { ...roomResult[0], player_count: playersResult.length }, // Dynamically calculate player_count
       players: playersResult,
     });
 

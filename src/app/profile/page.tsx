@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
-import { ArrowLeft, Trophy, Target, Clock, Users, Star, Calendar, GamepadIcon, Loader2 } from "lucide-react" // (加一个 Loader2)
+import { ArrowLeft, Trophy, Target, Clock, Users, Star, Calendar, GamepadIcon, Loader2 } from "lucide-react" // (Add Loader2)
 import { ProtectedRoute } from "@/components/protected-route"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "next/navigation"

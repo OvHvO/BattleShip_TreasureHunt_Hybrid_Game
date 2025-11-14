@@ -424,7 +424,7 @@ export default function GameRoomPage() {
                   <div className="pt-4 border-t space-y-3">
                     <Button
                       onClick={handleStartGame}
-                      disabled={startingGame || players.length < 2}
+                      disabled={startingGame || players.length < 4}
                       className={`w-full text-sm sm:text-base ${players.length >= 2 ? 'bg-green-600 hover:bg-green-700 text-white animate-pulse' : ''}`}
                       size="lg"
                       variant={players.length >= 4 ? "default" : "secondary"}

@@ -2,749 +2,477 @@
   {
     "question_id": "Q001",
     "question": "What is the main purpose of an 'if' statement in Python?",
-    "options": {
-      "A": "To execute code repeatedly",
-      "B": "To execute code conditionally",
-      "C": "To define a function",
-      "D": "To stop program execution"
-    },
-    "correct_answer": "B"
+    "options": { "A": "To execute code repeatedly", "B": "To execute code conditionally", "C": "To define a function", "D": "To stop program execution" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q002",
     "question": "Which keyword is used to provide an alternative condition in an if statement?",
-    "options": {
-      "A": "elseif",
-      "B": "else if",
-      "C": "elif",
-      "D": "otherwise"
-    },
-    "correct_answer": "C"
+    "options": { "A": "elseif", "B": "else if", "C": "elif", "D": "otherwise" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q003",
     "question": "What does the 'else' block do in an if-else statement?",
-    "options": {
-      "A": "It runs only when the if condition is true",
-      "B": "It runs when the if condition is false",
-      "C": "It repeats the if condition",
-      "D": "It defines a new variable"
-    },
-    "correct_answer": "B"
+    "options": { "A": "It runs only when the if condition is true", "B": "It runs when the if condition is false", "C": "It repeats the if condition", "D": "It defines a new variable" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q004",
     "question": "Which of the following is a valid Python if statement?",
-    "options": {
-      "A": "if x = 10:",
-      "B": "if x == 10:",
-      "C": "if (x => 10)",
-      "D": "if x equals 10:"
-    },
-    "correct_answer": "B"
+    "options": { "A": "if x = 10:", "B": "if x == 10:", "C": "if (x => 10)", "D": "if x equals 10:" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q005",
     "question": "What will this code print? if 5 > 3: print('Yes') else: print('No')",
-    "options": {
-      "A": "Yes",
-      "B": "No",
-      "C": "Error",
-      "D": "None"
-    },
-    "correct_answer": "A"
+    "options": { "A": "Yes", "B": "No", "C": "Error", "D": "None" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q006",
     "question": "What is the result of 'if False: print(1) else: print(2)'?",
-    "options": {
-      "A": "1",
-      "B": "2",
-      "C": "None",
-      "D": "Error"
-    },
-    "correct_answer": "B"
+    "options": { "A": "1", "B": "2", "C": "None", "D": "Error" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q007",
     "question": "Which operator is used for logical AND in Python?",
-    "options": {
-      "A": "&",
-      "B": "and",
-      "C": "&&",
-      "D": "AND"
-    },
-    "correct_answer": "B"
+    "options": { "A": "&", "B": "and", "C": "&&", "D": "AND" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q008",
     "question": "Which operator represents logical OR in Python?",
-    "options": {
-      "A": "||",
-      "B": "or",
-      "C": "OR",
-      "D": "|"
-    },
-    "correct_answer": "B"
+    "options": { "A": "||", "B": "or", "C": "OR", "D": "|" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q009",
     "question": "What keyword is used to skip the rest of the current loop iteration?",
-    "options": {
-      "A": "break",
-      "B": "skip",
-      "C": "continue",
-      "D": "pass"
-    },
-    "correct_answer": "C"
+    "options": { "A": "break", "B": "skip", "C": "continue", "D": "pass" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q010",
     "question": "What does the 'break' statement do in a loop?",
-    "options": {
-      "A": "Skips one iteration",
-      "B": "Stops the loop entirely",
-      "C": "Restarts the loop",
-      "D": "Continues after next iteration"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Skips one iteration", "B": "Stops the loop entirely", "C": "Restarts the loop", "D": "Continues after next iteration" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q011",
     "question": "Which loop runs while a condition is true?",
-    "options": {
-      "A": "for",
-      "B": "while",
-      "C": "do-while",
-      "D": "loop"
-    },
-    "correct_answer": "B"
+    "options": { "A": "for", "B": "while", "C": "do-while", "D": "loop" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q012",
     "question": "What keyword can define a loop that iterates a fixed number of times?",
-    "options": {
-      "A": "for",
-      "B": "repeat",
-      "C": "iterate",
-      "D": "loop"
-    },
-    "correct_answer": "A"
+    "options": { "A": "for", "B": "repeat", "C": "iterate", "D": "loop" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q013",
     "question": "What will 'for i in range(3): print(i)' output?",
-    "options": {
-      "A": "1 2 3",
-      "B": "0 1 2",
-      "C": "0 1 2 3",
-      "D": "None"
-    },
-    "correct_answer": "B"
+    "options": { "A": "1 2 3", "B": "0 1 2", "C": "0 1 2 3", "D": "None" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q014",
     "question": "Which statement is used to do nothing in Python?",
-    "options": {
-      "A": "continue",
-      "B": "skip",
-      "C": "pass",
-      "D": "void"
-    },
-    "correct_answer": "C"
+    "options": { "A": "continue", "B": "skip", "C": "pass", "D": "void" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q015",
     "question": "Which keyword is used to handle exceptions?",
-    "options": {
-      "A": "if",
-      "B": "catch",
-      "C": "try",
-      "D": "error"
-    },
-    "correct_answer": "C"
+    "options": { "A": "if", "B": "catch", "C": "try", "D": "error" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q016",
     "question": "What does 'else' in a loop mean in Python?",
-    "options": {
-      "A": "Executes when the loop ends normally",
-      "B": "Executes for every iteration",
-      "C": "Executes if loop breaks",
-      "D": "Is not allowed in loops"
-    },
-    "correct_answer": "A"
+    "options": { "A": "Executes when the loop ends normally", "B": "Executes for every iteration", "C": "Executes if loop breaks", "D": "Is not allowed in loops" },
+    "correct_answer": "A",
+    "difficulty": "hard"
   },
   {
     "question_id": "Q017",
     "question": "What is the output of 'for i in range(3): pass; print(i)'?",
-    "options": {
-      "A": "0",
-      "B": "2",
-      "C": "3",
-      "D": "Error"
-    },
-    "correct_answer": "B"
+    "options": { "A": "0", "B": "2", "C": "3", "D": "Error" },
+    "correct_answer": "B",
+    "difficulty": "hard"
   },
   {
     "question_id": "Q018",
     "question": "Which Python keyword is used for decision making?",
-    "options": {
-      "A": "loop",
-      "B": "if",
-      "C": "goto",
-      "D": "return"
-    },
-    "correct_answer": "B"
+    "options": { "A": "loop", "B": "if", "C": "goto", "D": "return" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q019",
     "question": "What type of control structure allows repetition?",
-    "options": {
-      "A": "Loop",
-      "B": "Condition",
-      "C": "Decision",
-      "D": "Function"
-    },
-    "correct_answer": "A"
+    "options": { "A": "Loop", "B": "Condition", "C": "Decision", "D": "Function" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q020",
     "question": "What happens if you forget a colon ':' at the end of an if statement?",
-    "options": {
-      "A": "Nothing happens",
-      "B": "SyntaxError occurs",
-      "C": "Code still runs",
-      "D": "Program skips condition"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Nothing happens", "B": "SyntaxError occurs", "C": "Code still runs", "D": "Program skips condition" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q021",
     "question": "Which keyword starts an exception block?",
-    "options": {
-      "A": "try",
-      "B": "throw",
-      "C": "except",
-      "D": "error"
-    },
-    "correct_answer": "A"
+    "options": { "A": "try", "B": "throw", "C": "except", "D": "error" },
+    "correct_answer": "A",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q022",
     "question": "What is the default starting index of range(5)?",
-    "options": {
-      "A": "1",
-      "B": "5",
-      "C": "0",
-      "D": "-1"
-    },
-    "correct_answer": "C"
+    "options": { "A": "1", "B": "5", "C": "0", "D": "-1" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q023",
     "question": "What does 'continue' do in a for loop?",
-    "options": {
-      "A": "Skips the rest of the code in the loop for current iteration",
-      "B": "Stops the loop",
-      "C": "Restarts loop",
-      "D": "Raises an error"
-    },
-    "correct_answer": "A"
+    "options": { "A": "Skips the rest of the code in the loop for current iteration", "B": "Stops the loop", "C": "Restarts loop", "D": "Raises an error" },
+    "correct_answer": "A",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q024",
     "question": "What keyword defines an alternative condition if the first if fails?",
-    "options": {
-      "A": "elseif",
-      "B": "elif",
-      "C": "else if",
-      "D": "alternate"
-    },
-    "correct_answer": "B"
+    "options": { "A": "elseif", "B": "elif", "C": "else if", "D": "alternate" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q025",
     "question": "Which of the following is invalid syntax?",
-    "options": {
-      "A": "if x == 1: print(x)",
-      "B": "if (x == 1): print(x)",
-      "C": "if x = 1: print(x)",
-      "D": "if x==1: print(x)"
-    },
-    "correct_answer": "C"
+    "options": { "A": "if x == 1: print(x)", "B": "if (x == 1): print(x)", "C": "if x = 1: print(x)", "D": "if x==1: print(x)" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q026",
     "question": "What does range(2, 5) generate?",
-    "options": {
-      "A": "2, 3, 4",
-      "B": "2, 3, 4, 5",
-      "C": "1, 2, 3, 4",
-      "D": "3, 4, 5"
-    },
-    "correct_answer": "A"
+    "options": { "A": "2, 3, 4", "B": "2, 3, 4, 5", "C": "1, 2, 3, 4", "D": "3, 4, 5" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q027",
     "question": "Which keyword is used to exit a loop early?",
-    "options": {
-      "A": "exit",
-      "B": "stop",
-      "C": "break",
-      "D": "return"
-    },
-    "correct_answer": "C"
+    "options": { "A": "exit", "B": "stop", "C": "break", "D": "return" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q028",
     "question": "What will happen if while condition is always True?",
-    "options": {
-      "A": "Loop runs once",
-      "B": "Loop never runs",
-      "C": "Infinite loop",
-      "D": "Error"
-    },
-    "correct_answer": "C"
+    "options": { "A": "Loop runs once", "B": "Loop never runs", "C": "Infinite loop", "D": "Error" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q029",
     "question": "Which of the following is not a loop keyword?",
-    "options": {
-      "A": "for",
-      "B": "while",
-      "C": "do",
-      "D": "continue"
-    },
-    "correct_answer": "C"
+    "options": { "A": "for", "B": "while", "C": "do", "D": "continue" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q030",
     "question": "Which control structure allows branching?",
-    "options": {
-      "A": "if-elif-else",
-      "B": "while",
-      "C": "for",
-      "D": "try-except"
-    },
-    "correct_answer": "A"
+    "options": { "A": "if-elif-else", "B": "while", "C": "for", "D": "try-except" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q031",
     "question": "What is the output of type([])?",
-    "options": {
-      "A": "<class 'tuple'>",
-      "B": "<class 'list'>",
-      "C": "<class 'dict'>",
-      "D": "<class 'array'>"
-    },
-    "correct_answer": "B"
+    "options": { "A": "<class 'tuple'>", "B": "<class 'list'>", "C": "<class 'dict'>", "D": "<class 'array'>" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q032",
     "question": "Which Python keyword is used to define a class?",
-    "options": {
-      "A": "object",
-      "B": "define",
-      "C": "class",
-      "D": "struct"
-    },
-    "correct_answer": "C"
+    "options": { "A": "object", "B": "define", "C": "class", "D": "struct" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q033",
     "question": "Which function converts a list into a tuple?",
-    "options": {
-      "A": "convert(list)",
-      "B": "tuple(list)",
-      "C": "list(tuple)",
-      "D": "dict(list)"
-    },
-    "correct_answer": "B"
+    "options": { "A": "convert(list)", "B": "tuple(list)", "C": "list(tuple)", "D": "dict(list)" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q034",
     "question": "What will be the output of print(2 ** 3)?",
-    "options": {
-      "A": "5",
-      "B": "6",
-      "C": "8",
-      "D": "9"
-    },
-    "correct_answer": "C"
+    "options": { "A": "5", "B": "6", "C": "8", "D": "9" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q035",
     "question": "Which data type does a Python dictionary use for its keys?",
-    "options": {
-      "A": "Only integers",
-      "B": "Only strings",
-      "C": "Immutable types like strings, numbers, or tuples",
-      "D": "Any type, including lists"
-    },
-    "correct_answer": "C"
+    "options": { "A": "Only integers", "B": "Only strings", "C": "Immutable types like strings, numbers, or tuples", "D": "Any type, including lists" },
+    "correct_answer": "C",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q036",
     "question": "How do you access the value of a key 'name' in a dictionary 'person'?",
-    "options": {
-      "A": "person.name",
-      "B": "person['name']",
-      "C": "person->name",
-      "D": "get(person, 'name')"
-    },
-    "correct_answer": "B"
+    "options": { "A": "person.name", "B": "person['name']", "C": "person->name", "D": "get(person, 'name')" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q037",
     "question": "Which method adds a key-value pair to a dictionary?",
-    "options": {
-      "A": "dict.add(key, value)",
-      "B": "dict.insert(key, value)",
-      "C": "dict[key] = value",
-      "D": "add.dict(key, value)"
-    },
-    "correct_answer": "C"
+    "options": { "A": "dict.add(key, value)", "B": "dict.insert(key, value)", "C": "dict[key] = value", "D": "add.dict(key, value)" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q038",
     "question": "What will be the output of len({'a':1, 'b':2, 'c':3})?",
-    "options": {
-      "A": "3",
-      "B": "6",
-      "C": "2",
-      "D": "Error"
-    },
-    "correct_answer": "A"
+    "options": { "A": "3", "B": "6", "C": "2", "D": "Error" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q039",
     "question": "Which keyword is used to handle exceptions in Python?",
-    "options": {
-      "A": "catch",
-      "B": "error",
-      "C": "try",
-      "D": "exception"
-    },
-    "correct_answer": "C"
+    "options": { "A": "catch", "B": "error", "C": "try", "D": "exception" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q040",
     "question": "What happens if an exception is not caught in a Python program?",
-    "options": {
-      "A": "The program ignores it",
-      "B": "The program stops and shows an error message",
-      "C": "Python restarts the program",
-      "D": "It logs the error silently"
-    },
-    "correct_answer": "B"
+    "options": { "A": "The program ignores it", "B": "The program stops and shows an error message", "C": "Python restarts the program", "D": "It logs the error silently" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q041",
     "question": "Which block is always executed, whether or not an exception occurs?",
-    "options": {
-      "A": "try",
-      "B": "except",
-      "C": "finally",
-      "D": "raise"
-    },
-    "correct_answer": "C"
+    "options": { "A": "try", "B": "except", "C": "finally", "D": "raise" },
+    "correct_answer": "C",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q042",
     "question": "How do you open a file named 'data.txt' for reading?",
-    "options": {
-      "A": "open('data.txt')",
-      "B": "open('data.txt', 'r')",
-      "C": "file.read('data.txt')",
-      "D": "open('data.txt', 'read')"
-    },
-    "correct_answer": "B"
+    "options": { "A": "open('data.txt')", "B": "open('data.txt', 'r')", "C": "file.read('data.txt')", "D": "open('data.txt', 'read')" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q043",
     "question": "Which method reads all lines of a file into a list?",
-    "options": {
-      "A": "read()",
-      "B": "readline()",
-      "C": "readlines()",
-      "D": "getlines()"
-    },
-    "correct_answer": "C"
+    "options": { "A": "read()", "B": "readline()", "C": "readlines()", "D": "getlines()" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q044",
     "question": "Which keyword defines a class in Python?",
-    "options": {
-      "A": "object",
-      "B": "define",
-      "C": "class",
-      "D": "create"
-    },
-    "correct_answer": "C"
+    "options": { "A": "object", "B": "define", "C": "class", "D": "create" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q045",
     "question": "What is the name of the method called automatically when an object is created?",
-    "options": {
-      "A": "__create__",
-      "B": "__init__",
-      "C": "__start__",
-      "D": "__make__"
-    },
-    "correct_answer": "B"
+    "options": { "A": "__create__", "B": "__init__", "C": "__start__", "D": "__make__" },
+    "correct_answer": "B",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q046",
     "question": "Which keyword is used to inherit a class in Python?",
-    "options": {
-      "A": "inherits",
-      "B": "extends",
-      "C": "super",
-      "D": "class Child(Parent)"
-    },
-    "correct_answer": "D"
+    "options": { "A": "inherits", "B": "extends", "C": "super", "D": "class Child(Parent)" },
+    "correct_answer": "D",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q047",
     "question": "How do you define a private variable in a Python class?",
-    "options": {
-      "A": "Prefix it with a single underscore",
-      "B": "Prefix it with double underscores",
-      "C": "Suffix it with underscores",
-      "D": "Declare it with 'private' keyword"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Prefix it with a single underscore", "B": "Prefix it with double underscores", "C": "Suffix it with underscores", "D": "Declare it with 'private' keyword" },
+    "correct_answer": "B",
+    "difficulty": "hard"
   },
   {
     "question_id": "Q048",
     "question": "What does the 'self' parameter in a class method represent?",
-    "options": {
-      "A": "The class itself",
-      "B": "The instance of the class",
-      "C": "The superclass",
-      "D": "A global variable"
-    },
-    "correct_answer": "B"
+    "options": { "A": "The class itself", "B": "The instance of the class", "C": "The superclass", "D": "A global variable" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q049",
     "question": "Which built-in function returns the number of items in an object?",
-    "options": {
-      "A": "size()",
-      "B": "count()",
-      "C": "len()",
-      "D": "num()"
-    },
-    "correct_answer": "C"
+    "options": { "A": "size()", "B": "count()", "C": "len()", "D": "num()" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q050",
     "question": "Which operator is used for logical AND in Python?",
-    "options": {
-      "A": "&&",
-      "B": "&",
-      "C": "and",
-      "D": "AND"
-    },
-    "correct_answer": "C"
+    "options": { "A": "&&", "B": "&", "C": "and", "D": "AND" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q051",
     "question": "Which of the following creates a set in Python?",
-    "options": {
-      "A": "{}",
-      "B": "set()",
-      "C": "[]",
-      "D": "tuple()"
-    },
-    "correct_answer": "B"
+    "options": { "A": "{}", "B": "set()", "C": "[]", "D": "tuple()" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q052",
     "question": "What is the difference between a list and a tuple?",
-    "options": {
-      "A": "Lists are immutable, tuples are mutable",
-      "B": "Tuples are immutable, lists are mutable",
-      "C": "Both are immutable",
-      "D": "Both are mutable"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Lists are immutable, tuples are mutable", "B": "Tuples are immutable, lists are mutable", "C": "Both are immutable", "D": "Both are mutable" },
+    "correct_answer": "B",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q053",
     "question": "Which operator is used to check membership in Python?",
-    "options": {
-      "A": "has",
-      "B": "in",
-      "C": "contains",
-      "D": "=="
-    },
-    "correct_answer": "B"
+    "options": { "A": "has", "B": "in", "C": "contains", "D": "==" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q054",
     "question": "What will be the output of: 3 in [1,2,3,4]?",
-    "options": {
-      "A": "True",
-      "B": "False",
-      "C": "None",
-      "D": "Error"
-    },
-    "correct_answer": "A"
+    "options": { "A": "True", "B": "False", "C": "None", "D": "Error" },
+    "correct_answer": "A",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q055",
     "question": "Which function can be used to sort a list?",
-    "options": {
-      "A": "sort()",
-      "B": "order()",
-      "C": "sorted()",
-      "D": "Both A and C"
-    },
-    "correct_answer": "D"
+    "options": { "A": "sort()", "B": "order()", "C": "sorted()", "D": "Both A and C" },
+    "correct_answer": "D",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q056",
     "question": "What is the default return value of a Python function if no return is specified?",
-    "options": {
-      "A": "0",
-      "B": "None",
-      "C": "False",
-      "D": "''"
-    },
-    "correct_answer": "B"
+    "options": { "A": "0", "B": "None", "C": "False", "D": "''" },
+    "correct_answer": "B",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q057",
     "question": "Which method removes all items from a dictionary?",
-    "options": {
-      "A": "delete()",
-      "B": "remove()",
-      "C": "clear()",
-      "D": "empty()"
-    },
-    "correct_answer": "C"
+    "options": { "A": "delete()", "B": "remove()", "C": "clear()", "D": "empty()" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q058",
     "question": "What is the output of list(range(3))?",
-    "options": {
-      "A": "[1, 2, 3]",
-      "B": "[0, 1, 2]",
-      "C": "range(3)",
-      "D": "Error"
-    },
-    "correct_answer": "B"
+    "options": { "A": "[1, 2, 3]", "B": "[0, 1, 2]", "C": "range(3)", "D": "Error" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q059",
     "question": "What does the zip() function do?",
-    "options": {
-      "A": "Compresses data files",
-      "B": "Combines multiple iterables into tuples",
-      "C": "Sorts two lists together",
-      "D": "Joins strings"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Compresses data files", "B": "Combines multiple iterables into tuples", "C": "Sorts two lists together", "D": "Joins strings" },
+    "correct_answer": "B",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q060",
     "question": "Which Python function is used to find the minimum value?",
-    "options": {
-      "A": "lowest()",
-      "B": "min()",
-      "C": "least()",
-      "D": "smallest()"
-    },
-    "correct_answer": "B"
+    "options": { "A": "lowest()", "B": "min()", "C": "least()", "D": "smallest()" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q061",
     "question": "Which symbol is used for exponentiation in Python?",
-    "options": {
-      "A": "^",
-      "B": "**",
-      "C": "exp",
-      "D": "pow"
-    },
-    "correct_answer": "B"
+    "options": { "A": "^", "B": "**", "C": "exp", "D": "pow" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q062",
     "question": "Which statement creates a lambda function?",
-    "options": {
-      "A": "lambda x: x + 1",
-      "B": "def x(x): return x + 1",
-      "C": "lambda(x): x + 1",
-      "D": "create lambda x: x + 1"
-    },
-    "correct_answer": "A"
+    "options": { "A": "lambda x: x + 1", "B": "def x(x): return x + 1", "C": "lambda(x): x + 1", "D": "create lambda x: x + 1" },
+    "correct_answer": "A",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q063",
     "question": "What will be the output of [x*2 for x in range(3)]?",
-    "options": {
-      "A": "[0, 2, 4]",
-      "B": "[2, 4, 6]",
-      "C": "[1, 2, 3]",
-      "D": "Error"
-    },
-    "correct_answer": "A"
+    "options": { "A": "[0, 2, 4]", "B": "[2, 4, 6]", "C": "[1, 2, 3]", "D": "Error" },
+    "correct_answer": "A",
+    "difficulty": "medium"
   },
   {
     "question_id": "Q064",
     "question": "Which module in Python is used for generating random numbers?",
-    "options": {
-      "A": "numbers",
-      "B": "math",
-      "C": "random",
-      "D": "rand"
-    },
-    "correct_answer": "C"
+    "options": { "A": "numbers", "B": "math", "C": "random", "D": "rand" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   },
   {
     "question_id": "Q065",
     "question": "Which method converts all characters of a string to lowercase?",
-    "options": {
-      "A": "lowercase()",
-      "B": "toLower()",
-      "C": "lower()",
-      "D": "downcase()"
-    },
-    "correct_answer": "C"
+    "options": { "A": "lowercase()", "B": "toLower()", "C": "lower()", "D": "downcase()" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q066",
     "question": "What is the output of 'python'.upper()?",
-    "options": {
-      "A": "Python",
-      "B": "PYTHON",
-      "C": "python",
-      "D": "Error"
-    },
-    "correct_answer": "B"
+    "options": { "A": "Python", "B": "PYTHON", "C": "python", "D": "Error" },
+    "correct_answer": "B",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q067",
     "question": "Which keyword is used to import a module in Python?",
-    "options": {
-      "A": "include",
-      "B": "require",
-      "C": "import",
-      "D": "using"
-    },
-    "correct_answer": "C"
+    "options": { "A": "include", "B": "require", "C": "import", "D": "using" },
+    "correct_answer": "C",
+    "difficulty": "easy"
   },
   {
     "question_id": "Q068",
     "question": "Which of the following is used to install external Python packages?",
-    "options": {
-      "A": "installpkg",
-      "B": "python get",
-      "C": "pip",
-      "D": "importlib"
-    },
-    "correct_answer": "C"
+    "options": { "A": "installpkg", "B": "python get", "C": "pip", "D": "importlib" },
+    "correct_answer": "C",
+    "difficulty": "normal"
   }
 ]

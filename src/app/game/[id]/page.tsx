@@ -55,6 +55,7 @@ export default function GameInterfacePage() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [isSkipping, setIsSkipping] = useState(false)
   const [isMarkingDead, setIsMarkingDead] = useState(false)
+  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false)
   
   // 👇 No longer needed
   // const scannerContainerRef = useRef<HTMLDivElement>(null)
@@ -95,7 +96,7 @@ export default function GameInterfacePage() {
     }
   }, [gameId]) // Depends on gameId
 
-  // ... (Your checkGameAccess useEffect remains unchanged) ...
+  // ... (checkGameAccess useEffect remains unchanged) ...
   useEffect(() => {
     // Skip authorization check if user has explicitly left
     if (hasLeftGame) {
@@ -135,7 +136,7 @@ export default function GameInterfacePage() {
     }
   }, [user, gameId, hasLeftGame, fetchGameData])
 
-  // ... (Your polling useEffect remains unchanged) ...
+  // ... (polling useEffect remains unchanged) ...
   useEffect(() => {
     // Only start polling after initial authorization succeeds
     if (isAuthorized !== true || !gameId || !user?.id) return;
@@ -206,7 +207,7 @@ export default function GameInterfacePage() {
   // Check if game is finished
   const isGameFinished = gameData?.status === 'finished'
 
-  // ... (Your handleLeaveGame remains unchanged) ...
+  // ... (handleLeaveGame remains unchanged) ...
   const handleLeaveGame = async () => {
     if (isLeaving || !user?.id || !gameId) return
     setIsLeaving(true);
@@ -249,7 +250,7 @@ export default function GameInterfacePage() {
   }
 
 
-  // --- (Modified) Scanner logic is now very simple ---
+  // --- (MODIFIED) Scanner logic ---
 
   // 1. Open scanner
   const handleScanQRCode = () => {
@@ -261,51 +262,52 @@ export default function GameInterfacePage() {
     setIsScannerVisible(false);
   }
 
-  // 3. Scan success callback
+  // 3. Scan success callback (NEW LOGIC)
   const handleScanSuccess = (decodedText: string) => {
     console.log('✅ QR Code scanned raw:', decodedText);
     
-    let questionId = decodedText; // Default to the raw text
-    
-    // Attempt to parse the decoded text as JSON
-    try {
-      const parsedData = JSON.parse(decodedText);
-      // If parsing is successful AND it has a question_id property
-      if (parsedData && typeof parsedData.question_id === 'string') {
-        questionId = parsedData.question_id; // Extract the actual ID
-        console.log('Extracted question ID:', questionId);
-      } else {
-         console.warn('Scanned data is JSON but lacks question_id:', parsedData);
-      }
-    } catch (e) {
-      // If parsing fails, assume the decodedText is already the plain ID
-      console.log('Scanned data is not JSON, using raw text as ID.');
-    }
+    const validDifficulties = ["easy", "normal", "medium", "hard"];
+    // Clean up scanned text (remove leading/trailing spaces, convert to lowercase)
+    const scannedDifficulty = decodedText.trim().toLowerCase();
 
-    setScannedData(decodedText); // Keep original scanned data for display if needed
-    setIsScannerVisible(false); // Close scanner
-    fetchQuestion(questionId); // Get question (using the potentially extracted ID)
+    if (validDifficulties.includes(scannedDifficulty)) {
+      // Scanned a valid difficulty
+      console.log('Extracted difficulty level:', scannedDifficulty);
+      setScannedData(scannedDifficulty); // Store difficulty (optional)
+      setIsScannerVisible(false); // Close scanner
+      fetchRandomQuestion(scannedDifficulty); // 🔥 Call new function to get random question
+    } else {
+      // Scanned invalid content
+      console.warn('Scanned data is not a valid difficulty:', decodedText);
+      alert('Invalid QR code. Please scan one of "easy", "normal", "medium", or "hard".');
+      setIsScannerVisible(false);
+    }
   }
 
-  // 4. Get question logic
-  const fetchQuestion = useCallback(async (questionId: string) => {
+  // 4. Get *random* question logic (NEW FUNCTION)
+  const fetchRandomQuestion = useCallback(async (difficulty: string) => {
     try {
-      const response = await fetch(`/api/questions/${questionId}`)
+      // 👇 This is the new API endpoint created in step two
+      const response = await fetch(`/api/questions/random?difficulty=${difficulty}`)
       if (response.ok) {
         const questionData = await response.json()
         setQuestion(questionData)
         setShowQuestionModal(true) // Open question modal
       } else {
-        console.error('Question not found')
-        alert('Invalid QR code - question not found')
+        const errorData = await response.json()
+        console.error('Error fetching random question:', errorData.error)
+        alert(`Failed to load question: ${errorData.error || 'No questions found for this difficulty'}`)
       }
     } catch (error) {
-      console.error('Error fetching question:', error)
+      console.error('Error fetching random question:', error)
       alert('Error loading question')
     }
-  }, []); // Remove handleCloseScanner dependency
+  }, []); // No dependencies
 
-  // Handle skip turn
+  // --- (End of MODIFIED Scanner logic) ---
+
+
+  // ... (handleSkipTurn remains unchanged) ...
   const handleSkipTurn = async () => {
     if (isSkipping || !user?.id || !gameId) return
     setIsSkipping(true)
@@ -336,7 +338,7 @@ export default function GameInterfacePage() {
     }
   }
 
-  // Handle player death
+  // ... (handleMarkDead remains unchanged) ...
   const handleMarkDead = async () => {
     if (isMarkingDead || !user?.id || !gameId) return
     
@@ -373,9 +375,12 @@ export default function GameInterfacePage() {
   
   // 👇 Scanner useEffect has been completely removed
   
-  // ... (Your handleAnswerSubmit remains unchanged) ...
+  // ... (handleAnswerSubmit remains unchanged) ...
   const handleAnswerSubmit = async () => {
-    if (!selectedAnswer || !question || !user?.id) return
+    // 👇 MODIFIED: Add a check for isSubmittingAnswer
+    if (!selectedAnswer || !question || !user?.id || isSubmittingAnswer) return
+
+    setIsSubmittingAnswer(true); // 👈 SET STATE TO TRUE
 
     try {
       const isCorrect = selectedAnswer === question.correct_answer
@@ -431,10 +436,12 @@ export default function GameInterfacePage() {
     } catch (error) {
       console.error('Error submitting answer:', error)
       alert('Error submitting answer')
+    } finally {
+      setIsSubmittingAnswer(false); // 👈 RESET STATE IN FINALLY
     }
   }
 
-  // ... (Your Loading/Error JSX remains unchanged) ...
+  // ... (Loading/Error JSX remains unchanged) ...
   if (isAuthorized === null) {
     return (
       <ProtectedRoute>
@@ -732,6 +739,7 @@ export default function GameInterfacePage() {
           </div>
         </main>
 
+        {/* ... (Footer JSX remains unchanged) ... */}
         {/* Footer Navigation */}
         <footer className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-border/50 shadow-2xl z-40">
           <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none"></div>
